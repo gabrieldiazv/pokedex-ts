@@ -1,54 +1,41 @@
-# React + TypeScript + Vite
+# 🧬 Pokédex App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una Pokédex moderna hecha con **React + TypeScript**, usando **TailwindCSS** para el diseño y **React Query** para el manejo de datos desde la [PokéAPI](https://pokeapi.co/).
 
-Currently, two official plugins are available:
+## 🚀 Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ✅ Lista paginada de Pokémon (con navegación suave)
+- 🔍 Búsqueda por nombre (con resultado dinámico)
+- 📄 Página de detalle para cada Pokémon
+- 🎨 UI responsive con diseño personalizado estilo Pokédex
+- 📦 Caching de datos con React Query
+- 📚 Tipado estricto con TypeScript
+- 🧠 Navegación inteligente (vuelve a la página anterior correctamente)
 
-## Expanding the ESLint configuration
+## 🖼 Vista previa
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+![demo pokedex](https://rococo-marigold-f4203c.netlify.app/) <!-- (opcional, puedes poner un gif o screenshot si quieres) -->
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 📦 Tecnologías usadas
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [TanStack React Query](https://tanstack.com/query/latest)
+- [React Router DOM](https://reactrouter.com/)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 📁 Estructura de carpetas
+
+```bash
+src/
+├── components/        # Componentes reutilizables (Header, Body, Card, etc.)
+├── features/pokemon/  # Lógica del módulo Pokémon (hooks, servicios, tipos)
+├── hooks/             # Custom hooks (búsqueda, listas, detalles)
+├── pages/             # Páginas principales (Detalle, Home)
+├── types/             # Tipos globales y por feature
+├── utils/             # Funciones auxiliares
+├── App.tsx            # Configuración de rutas y layout
+├── main.tsx           # Punto de entrada principal
