@@ -1,0 +1,56 @@
+name: OpenShift CI (Build + Deploy)
+
+on:
+  push:
+    branches: [ "main" ]   # ajusta si usas otra rama
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # (Opcional) build local para validar que el repo compila
+      - name: Node build check
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npm run build
+
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1
+        with:
+          oc_version: "latest"
+
+      - name: Login to OpenShift
+        run: |
+          oc login --token="${{ secrets.OPENSHIFT_TOKEN }}" --server="${{ secrets.OPENSHIFT_SERVER }}"
+          oc project "${{ secrets.OPENSHIFT_NAMESPACE }}"
+
+      # Importante para S2I con Vite (devDependencies)
+      - name: Ensure BuildConfig has NPM_CONFIG_PRODUCTION=false
+        run: |
+          oc set env bc/app-pokedex NPM_CONFIG_PRODUCTION=false || true
+
+      # Dispara el build y espera a que termine
+      - name: Start OpenShift build
+        run: |
+          oc start-build app-pokedex --follow --wait
+
+      # (Opcional) Verifica rollout del Deployment
+      - name: Wait for rollout
+        run: |
+          oc rollout status deploy/app-pokedex --timeout=5m
+
+      # Health check de la Route (HTTP)
+      - name: Route check
+        run: |
+          HOST=$(oc get route app-pokedex -o jsonpath='{.spec.host}')
+          echo "Route: http://$HOST/"
+          code=$(curl -s -o /dev/null -w "%{http_code}" "http://$HOST/")
+          if [ "$code" != "200" ]; then
+            echo "Unexpected HTTP code: $code"
+            exit 1
+          fi
