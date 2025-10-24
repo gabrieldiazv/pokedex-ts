@@ -33,7 +33,7 @@ const PokemonSearchBar = ({ onSearch }: Props) => {
         type="submit"
         className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium transition"
       >
-        Buscar
+        Buscar Poke
       </button>
     </form>
   );
