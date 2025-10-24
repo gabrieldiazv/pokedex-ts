@@ -32,22 +32,22 @@ jobs:
       # Importante para S2I con Vite (devDependencies)
       - name: Ensure BuildConfig has NPM_CONFIG_PRODUCTION=false
         run: |
-          oc set env bc/app-pokedex NPM_CONFIG_PRODUCTION=false || true
+          oc set env bc/app-pokemon-demo NPM_CONFIG_PRODUCTION=false || true
 
       # Dispara el build y espera a que termine
       - name: Start OpenShift build
         run: |
-          oc start-build app-pokedex --follow --wait
+          oc start-build app-pokemon-demo --follow --wait
 
       # (Opcional) Verifica rollout del Deployment
       - name: Wait for rollout
         run: |
-          oc rollout status deploy/app-pokedex --timeout=5m
+          oc rollout status deploy/app-pokemon-demo --timeout=5m
 
       # Health check de la Route (HTTP)
       - name: Route check
         run: |
-          HOST=$(oc get route app-pokedex -o jsonpath='{.spec.host}')
+          HOST=$(oc get route app-pokemon-demo -o jsonpath='{.spec.host}')
           echo "Route: http://$HOST/"
           code=$(curl -s -o /dev/null -w "%{http_code}" "http://$HOST/")
           if [ "$code" != "200" ]; then
